@@ -28,25 +28,21 @@ set(PICO_BOARD pico_w CACHE STRING "Board type")
 # Pull in Raspberry Pi Pico SDK (must be before project)
 include(pico_sdk_import.cmake)
 
-project(blink C CXX ASM)
+project(microphone_adc C CXX ASM)
 
 # Initialise the Raspberry Pi Pico SDK
 pico_sdk_init()
 
 # Add executable. Default name is the project name, version 0.1
 
-add_executable(blink
-    blink.c
-    )
+add_executable(microphone_adc
+        microphone_adc.c
+        )
 
-# pull in common dependencies
-target_link_libraries(blink pico_stdlib)
-
-if (PICO_CYW43_SUPPORTED)
-    target_link_libraries(blink pico_cyw43_arch_none)
-endif()
+# pull in common dependencies and adc hardware support
+target_link_libraries(microphone_adc pico_stdlib hardware_adc)
 
 # create map/bin/hex file etc.
-pico_add_extra_outputs(blink)
+pico_add_extra_outputs(microphone_adc)
 
 # add url via pico_set_program_url
