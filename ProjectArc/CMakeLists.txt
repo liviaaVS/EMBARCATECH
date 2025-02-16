@@ -35,26 +35,21 @@ pico_sdk_init()
 
 # Add executable. Default name is the project name, version 0.1
 
-add_executable(ProjectArc ProjectArc.c )
+add_executable(ProjectArc ProjectArc.c inc/ssd1306_i2c.c )
 
 pico_set_program_name(ProjectArc "ProjectArc")
 pico_set_program_version(ProjectArc "0.1")
 
-# Modify the below lines to enable/disable output over UART/USB
+# Generate PIO header
+pico_generate_pio_header(ProjectArc ${CMAKE_CURRENT_LIST_DIR}/blink.pio)
 
+# Modify the below lines to enable/disable output over UART/USB
+pico_enable_stdio_uart(ProjectArc 0)
 pico_enable_stdio_usb(ProjectArc 1)
-pico_enable_stdio_uart(ProjectArc 1)
-target_compile_definitions(ProjectArc PRIVATE
-    LWIP_HTTPD=1
-    LWIP_HTTP_CLIENT=1
-)
 
 # Add the standard library to the build
-target_link_libraries(ProjectArc pico_stdlib cyw43-driver lwip) 
-
-include_directories(${PICO_SDK_PATH}/src/rp2_common/cyw43_arch)
-link_directories(${PICO_SDK_PATH}/lib)
-
+target_link_libraries(ProjectArc
+        pico_stdlib )
 
 # Add the standard include files to the build
 target_include_directories(ProjectArc PRIVATE
@@ -63,11 +58,20 @@ target_include_directories(ProjectArc PRIVATE
 
 # Add any user requested libraries
 target_link_libraries(ProjectArc 
-        hardware_spi
+        hardware_adc
+#        hardware_spi
+#        hardware_i2c
+#        hardware_dma
+#        hardware_pio
+#        hardware_interp
+#        hardware_timer
+#        hardware_watchdog
+#        hardware_clocks
+        pico_stdlib
+        pico_lwip_http
+        pico_cyw43_arch_lwip_threadsafe_background   
         hardware_i2c
-        pico_cyw43_arch_lwip_threadsafe_background
-        
+        hardware_pwm
         )
 
 pico_add_extra_outputs(ProjectArc)
-

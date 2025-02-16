@@ -39,6 +39,7 @@
     "files.associations": {
         "*.java": "java",
         "http_client.h": "c",
-        "tcp.h": "c"
+        "tcp.h": "c",
+        "udp.h": "c"
     }
 }
